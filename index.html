@@ -58,18 +58,27 @@
 <script>
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Добавляем класс "commented" для всех существующих комментариев
-  const existingComments = document.querySelectorAll('.comment');
-  existingComments.forEach(comment => {
-    comment.classList.add('commented');
-  });
-
   const addButton = document.querySelector('.add-form-button');
+  const nameInput = document.querySelector('.add-form-name');
+  const commentInput = document.querySelector('.add-form-text');
+
+  function validateInputs() {
+    const name = nameInput.value.trim();
+    const comment = commentInput.value.trim();
+
+    if (name === '' || comment === '') {
+      addButton.disabled = true; // Выключаем кнопку, если одно из полей пустое
+      addButton.style.backgroundColor = '#ccc'; // Изменяем цвет кнопки на серый
+    } else {
+      addButton.disabled = false; // Включаем кнопку, если оба поля заполнены
+      addButton.style.backgroundColor = '#bcec30'; // Изменяем цвет кнопки на оригинальный
+    }
+  }
+
+  nameInput.addEventListener('input', validateInputs);
+  commentInput.addEventListener('input', validateInputs);
 
   addButton.addEventListener('click', function() {
-    const nameInput = document.querySelector('.add-form-name');
-    const commentInput = document.querySelector('.add-form-text');
-
     const name = nameInput.value.trim();
     const comment = commentInput.value.trim();
 
@@ -82,7 +91,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const commentItem = document.createElement('li');
     commentItem.classList.add('comment');
-    commentItem.classList.add('commented'); // Добавляем класс "commented" для новых комментариев
 
     const commentHeader = document.createElement('div');
     commentHeader.classList.add('comment-header');
@@ -132,33 +140,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
     nameInput.value = '';
     commentInput.value = '';
+    validateInputs(); // Проверяем валидацию после добавления комментария
   });
 
-  // Делегирование событий для кнопок "Лайк" только для комментариев с классом "commented"
+  // Делегирование событий для кнопок "Лайк" только для комментариев
   document.addEventListener('click', function(event) {
     if (event.target && event.target.classList.contains('like-button')) {
-      const commentItem = event.target.closest('.comment');
-      if (commentItem.classList.contains('commented')) {
-        const likesCounter = event.target.parentNode.querySelector('.likes-counter');
-        const likeButton = event.target;
+      const likesCounter = event.target.parentNode.querySelector('.likes-counter');
+      const likeButton = event.target;
 
-        if (!likeButton.classList.contains('-active-like')) {
-          const currentLikes = parseInt(likesCounter.textContent);
-          likesCounter.textContent = currentLikes + 1;
+      if (!likeButton.classList.contains('-active-like')) {
+        const currentLikes = parseInt(likesCounter.textContent);
+        likesCounter.textContent = currentLikes + 1;
 
-          // Изменение цвета кнопки при нажатии
-          likeButton.classList.add('-active-like');
-        } else {
-          const currentLikes = parseInt(likesCounter.textContent);
-          likesCounter.textContent = currentLikes - 1;
+        // Изменение цвета кнопки при нажатии
+        likeButton.classList.add('-active-like');
+      } else {
+        const currentLikes = parseInt(likesCounter.textContent);
+        likesCounter.textContent = currentLikes - 1;
 
-          // Убираем цвет кнопки при повторном нажатии
-          likeButton.classList.remove('-active-like');
-        }
+        // Убираем цвет кнопки при повторном нажатии
+        likeButton.classList.remove('-active-like');
       }
     }
   });
 });
+
 </script>
 
 </html>
