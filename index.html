@@ -1,71 +1,171 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Проект "Комменты"</title>
-    <meta charset="utf-8" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
 
-  <body>
-    <div class="container">
-      <ul class="comments">
-        <li class="comment">
-          <div class="comment-header">
-            <div>Глеб Фокин</div>
-            <div>12.02.22 12:18</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Это будет первый комментарий на этой странице
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">3</span>
-              <button class="like-button"></button>
-            </div>
-          </div>
-        </li>
-        <li class="comment">
-          <div class="comment-header">
-            <div>Варвара Н.</div>
-            <div>13.02.22 19:22</div>
-          </div>
-          <div class="comment-body">
-            <div class="comment-text">
-              Мне нравится как оформлена эта страница! ❤
-            </div>
-          </div>
-          <div class="comment-footer">
-            <div class="likes">
-              <span class="likes-counter">75</span>
-              <button class="like-button -active-like"></button>
-            </div>
-          </div>
-        </li>
-      </ul>
-      <div class="add-form">
-        <input
-          type="text"
-          class="add-form-name"
-          placeholder="Введите ваше имя"
-        />
-        <textarea
-          type="textarea"
-          class="add-form-text"
-          placeholder="Введите ваш коментарий"
-          rows="4"
-        ></textarea>
-        <div class="add-form-row">
-          <button class="add-form-button">Написать</button>
+<head>
+  <title>Проект "Комменты"</title>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="container">
+    <ul class="comments">
+      <li class="comment">
+        <div class="comment-header">
+          <div>Глеб Фокин</div>
+          <div>12.02.22 12:18</div>
         </div>
+        <div class="comment-body">
+          <div class="comment-text">
+            Это будет первый комментарий на этой странице
+          </div>
+        </div>
+        <div class="comment-footer">
+          <div class="likes">
+            <span class="likes-counter">3</span>
+            <button class="like-button"></button>
+          </div>
+        </div>
+      </li>
+      <li class="comment">
+        <div class="comment-header">
+          <div>Варвара Н.</div>
+          <div>13.02.22 19:22</div>
+        </div>
+        <div class="comment-body">
+          <div class="comment-text">
+            Мне нравится как оформлена эта страница! ❤
+          </div>
+        </div>
+        <div class="comment-footer">
+          <div class="likes">
+            <span class="likes-counter">75</span>
+            <button class="like-button -active-like"></button>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="add-form">
+      <input type="text" class="add-form-name" placeholder="Введите ваше имя" />
+      <textarea type="textarea" class="add-form-text" placeholder="Введите ваш коментарий" rows="4"></textarea>
+      <div class="add-form-row">
+        <button class="add-form-button">Написать</button>
       </div>
     </div>
-  </body>
+  </div>
+</body>
 
-  <script>
-    "use strict";
-    // Код писать здесь
-    console.log("It works!");
-  </script>
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+  const addButton = document.querySelector('.add-form-button');
+  const nameInput = document.querySelector('.add-form-name');
+  const commentInput = document.querySelector('.add-form-text');
+
+  function validateInputs() {
+    const name = nameInput.value.trim();
+    const comment = commentInput.value.trim();
+
+    if (name === '' || comment === '') {
+      addButton.disabled = true; // Выключаем кнопку, если одно из полей пустое
+      addButton.style.backgroundColor = '#ccc'; // Изменяем цвет кнопки на серый
+    } else {
+      addButton.disabled = false; // Включаем кнопку, если оба поля заполнены
+      addButton.style.backgroundColor = '#bcec30'; // Изменяем цвет кнопки на оригинальный
+    }
+  }
+
+  nameInput.addEventListener('input', validateInputs);
+  commentInput.addEventListener('input', validateInputs);
+
+  addButton.addEventListener('click', function() {
+    const name = nameInput.value.trim();
+    const comment = commentInput.value.trim();
+
+    if (name === '' || comment === '') {
+      alert('Пожалуйста, заполните все поля');
+      return;
+    }
+
+    const commentsList = document.querySelector('.comments');
+
+    const commentItem = document.createElement('li');
+    commentItem.classList.add('comment');
+
+    const commentHeader = document.createElement('div');
+    commentHeader.classList.add('comment-header');
+
+    const nameDiv = document.createElement('div');
+    nameDiv.textContent = name;
+
+    const dateDiv = document.createElement('div');
+    const currentDate = new Date();
+    dateDiv.textContent = currentDate.toLocaleString();
+
+    commentHeader.appendChild(nameDiv);
+    commentHeader.appendChild(dateDiv);
+
+    const commentBody = document.createElement('div');
+    commentBody.classList.add('comment-body');
+
+    const commentText = document.createElement('div');
+    commentText.classList.add('comment-text');
+    commentText.textContent = comment;
+
+    commentBody.appendChild(commentText);
+
+    const commentFooter = document.createElement('div');
+    commentFooter.classList.add('comment-footer');
+
+    const likesDiv = document.createElement('div');
+    likesDiv.classList.add('likes');
+
+    const likesCounter = document.createElement('span');
+    likesCounter.classList.add('likes-counter');
+    likesCounter.textContent = '0';
+
+    const likeButton = document.createElement('button');
+    likeButton.classList.add('like-button');
+
+    likesDiv.appendChild(likesCounter);
+    likesDiv.appendChild(likeButton);
+
+    commentFooter.appendChild(likesDiv);
+
+    commentItem.appendChild(commentHeader);
+    commentItem.appendChild(commentBody);
+    commentItem.appendChild(commentFooter);
+
+    commentsList.appendChild(commentItem);
+
+    nameInput.value = '';
+    commentInput.value = '';
+    validateInputs(); // Проверяем валидацию после добавления комментария
+  });
+
+  // Делегирование событий для кнопок "Лайк" только для комментариев
+  document.addEventListener('click', function(event) {
+    if (event.target && event.target.classList.contains('like-button')) {
+      const likesCounter = event.target.parentNode.querySelector('.likes-counter');
+      const likeButton = event.target;
+
+      if (!likeButton.classList.contains('-active-like')) {
+        const currentLikes = parseInt(likesCounter.textContent);
+        likesCounter.textContent = currentLikes + 1;
+
+        // Изменение цвета кнопки при нажатии
+        likeButton.classList.add('-active-like');
+      } else {
+        const currentLikes = parseInt(likesCounter.textContent);
+        likesCounter.textContent = currentLikes - 1;
+
+        // Убираем цвет кнопки при повторном нажатии
+        likeButton.classList.remove('-active-like');
+      }
+    }
+  });
+});
+
+</script>
+
 </html>
