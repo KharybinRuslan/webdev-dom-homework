@@ -48,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function renderComments() {
     commentsList.innerHTML = '';
-    commentsArray.forEach(comment => {
+    commentsArray.forEach((comment, index) => {
       const commentItem = document.createElement('li');
       commentItem.classList.add('comment');
 
@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (comment.liked) {
         likeButton.classList.add('-active-like');
       }
-      likeButton.dataset.commentId = comment.id; // Добавляем идентификатор комментария в dataset
+      likeButton.dataset.commentIndex = index; // Устанавливаем порядковый индекс в dataset
 
       likesDiv.appendChild(likesCounter);
       likesDiv.appendChild(likeButton);
@@ -127,11 +127,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const currentDate = new Date().toLocaleString();
 
-    // Генерируем уникальный идентификатор для нового комментария
-    const newCommentId = commentsArray.length + 1;
+    // Находим максимальный порядковый индекс и увеличиваем на 1
+    const newCommentIndex = commentsArray.length;
 
     commentsArray.push({
-      id: newCommentId,
+      id: newCommentIndex + 1, // ID можно также выставить как порядковый индекс + 1
       author: name,
       date: currentDate,
       text: comment,
@@ -148,10 +148,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.addEventListener('click', function(event) {
     if (event.target && event.target.classList.contains('like-button')) {
-      const commentId = parseInt(event.target.dataset.commentId); // Получаем идентификатор комментария из dataset
-      const commentIndex = commentsArray.findIndex(comment => comment.id === commentId); // Находим индекс комментария в массиве по его идентификатору
+      const commentIndex = parseInt(event.target.dataset.commentIndex); // Получаем порядковый индекс комментария из dataset
 
-      if (commentIndex !== -1) {
+      if (!isNaN(commentIndex)) {
         const likeButton = event.target;
         const likesCounter = likeButton.parentNode.querySelector('.likes-counter');
 
