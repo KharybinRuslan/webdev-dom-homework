@@ -21,7 +21,6 @@
 </body>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
   let commentsArray = [
     {
       id: 1,
@@ -147,27 +146,14 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   document.addEventListener('click', function(event) {
-    if (event.target && event.target.classList.contains('like-button')) {
-      const commentIndex = parseInt(event.target.dataset.commentIndex); // Получаем порядковый индекс комментария из dataset
-
-      if (!isNaN(commentIndex)) {
-        const likeButton = event.target;
-        const likesCounter = likeButton.parentNode.querySelector('.likes-counter');
-
-        if (!commentsArray[commentIndex].liked) {
-          commentsArray[commentIndex].likes++;
-          commentsArray[commentIndex].liked = true;
-          likesCounter.textContent = commentsArray[commentIndex].likes;
-          likeButton.classList.add('-active-like');
-        } else {
-          commentsArray[commentIndex].likes--;
-          commentsArray[commentIndex].liked = false;
-          likesCounter.textContent = commentsArray[commentIndex].likes;
-          likeButton.classList.remove('-active-like');
-        }
-      }
+  if (event.target && event.target.classList.contains('like-button')) {
+    const commentIndex = parseInt(event.target.dataset.commentIndex);
+    if (!isNaN(commentIndex)) {
+      commentsArray[commentIndex].liked = !commentsArray[commentIndex].liked;
+      commentsArray[commentIndex].likes += commentsArray[commentIndex].liked ? 1 : -1;
+      renderComments();
     }
-  });
+  }
 });
 </script>
 
