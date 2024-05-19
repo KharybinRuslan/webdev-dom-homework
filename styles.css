@@ -137,29 +137,56 @@ body {
 }
 
 .error {
-  border: 3px solid red;
-  box-sizing: border-box;
-}
-
-.delete-form-button {
-  margin-top: 24px;
-  font-size: 14px;
-  padding: 8px 16px;
-  background-color: #d1e88d;
-  border: none;
-  border-radius: 16px;
-  font-family: Helvetica;
-}
-
-.delete-form-button:hover {
-  opacity: 0.9;
-  cursor: pointer;
+  background-color: rgb(255, 144, 144);
 }
 
 .quote {
-  background: #698d96;
+  background-color: #ffffff47;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 16px;
 }
 
-.hidden {
+.manipulation-of-comments {
+  display: flex;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #a6a6a6;
+}
+
+.manipulation-of-comments:hover {
+  color: #ffffff;
+  text-decoration: underline;
+  transition: all 0.1s;
+}
+
+.hide {
   display: none;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes customAni {
+  0%,
+  50%,
+  100% {
+    opacity: 1;
+  }
+
+  25%,
+  75% {
+    opacity: 0;
+  }
+}
+
+.-loading {
+  animation: customAni 2.5s ease 0s infinite normal none;
+}
+
+.progress-cursor {
+  cursor: progress;
 }

@@ -1,39 +1,41 @@
-const likeEvent = (listComments) => {
-    const likes = document.querySelectorAll('.like-button');
-    likes.forEach((likeElement, index) => {
-        likeElement.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const direction = listComments[index].isLiked ? -1 : +1;
-            listComments[index].likes += direction;
-            listComments[index].isLiked = !listComments[index].isLiked;
-            renderComments(listComments);
-        })
-    });
-}
+import { getDate } from "./date.js";
+import { like } from "./like.js";
+import { reply } from "./reply.js";
 
-export const renderComments = (listComments) => {
-    const commentsList = document.getElementById('list');
-    const commentsHTML = listComments.map((userComment, index) => {
-        let textHTML;
-        textHTML = `<li class="comment">
-            <div class="comment-header">
-                <div>${userComment.author.name}</div>
-                <div>${new Date(userComment.date).toLocaleDateString() + " " + new Date(userComment.date).getHours() + ":" + new Date(userComment.date).getMinutes()}</div>
-            </div>
-            <div class="comment-body">
-                <div class="comment-text">
-                    ${userComment.text}
+// Функция рендера
+export function renderComments(commentsForRender, commentsEl) {
+  const commentsHtml = commentsForRender
+    .map((post, index) => {
+      // Условия изменения стилие сердечка и открытия окна редактирования
+      const isLike = post.isLiked ? "-active-like" : "";
+      const isEdit = post.isEdit ? "" : "hide";
+      const isAuthor = post.isAuthor ? "" : "hide";
+
+      // Верстка тела комментария
+      return `<li class="comment" >
+              <div class="comment-header">
+                  <div> ${post.author.name} </div>
+                  <div>${getDate(post.date)}</div>
+              </div>
+              <div class="comment-body">
+                  <div id=${post.id} class="comment-text">
+                  ${post.text}
+                  </div>
+              </div>
+              <div class="comment-footer">
+                  <div class="likes">
+                  <span id = "likes-counter" class="likes-counter">${
+                    post.likes
+                  }</span>
+                  <button id=${index} class="like-button ${isLike}"></button>
+                  </div>
                 </div>
-            </div>
-            <div class="comment-footer">
-                <div class="likes">
-                    <span class="likes-counter">${userComment.likes}</span>
-                    <button class="like-button ${userComment.isLiked ? "-active-like" : ""}" data-index='${index}'></button>
-                </div>
-            </div>
-        </li>`
-        return textHTML;
-    }).join('');
-    commentsList.innerHTML = commentsHTML;
-    likeEvent(listComments);
+              </li>`;
+    })
+    .join("");
+
+  commentsEl.innerHTML = commentsHtml;
+
+  like(commentsForRender, commentsEl);
+  reply(commentsForRender);
 }
