@@ -89,6 +89,7 @@ export function renderAuthorize() {
           };
           setAutorizeData("persone", JSON.stringify(user));
           getFetchPromise();
+          localAutorize();
           setTimeout(() => {
             formEl.classList.value = "add-form";
             scroll(formEl);
