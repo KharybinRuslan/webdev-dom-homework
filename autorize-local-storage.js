@@ -37,5 +37,6 @@ export function localAutorize() {
 export function clearStorage() {
   setInterval(() => {
     localStorage.clear();
+    d;
   }, 60000);
 }
